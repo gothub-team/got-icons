@@ -49,30 +49,38 @@ function App() {
         main: 'accessibility-outline',
         addon: 'warning',
       },
-      'person-add': {
-        main: 'accessibility-outline',
-        addon: 'add',
+      ab: {
+        main: 'ab',
+        addon: 'warning',
       },
-      'person-add-1': {
-        main: 'accessibility-outline',
-        addon: 'add',
+      warn: {
+        main: 'warning',
+        addon: 'ab',
       },
-      'person-add-2': {
-        main: 'accessibility-outline',
-        addon: 'add',
-      },
-      'person-add-3': {
-        main: 'wifi-outline',
-        addon: 'water',
-      },
-      'person-add-4': {
-        main: 'accessibility-outline',
-        addon: 'add',
-      },
-      'person-add-5': {
-        main: 'accessibility-outline',
-        addon: 'add',
-      },
+      // 'person-add': {
+      //   main: 'accessibility-outline',
+      //   addon: 'add',
+      // },
+      // 'person-add-1': {
+      //   main: 'accessibility-outline',
+      //   addon: 'add',
+      // },
+      // 'person-add-2': {
+      //   main: 'accessibility-outline',
+      //   addon: 'add',
+      // },
+      // 'person-add-3': {
+      //   main: 'wifi-outline',
+      //   addon: 'water',
+      // },
+      // 'person-add-4': {
+      //   main: 'accessibility-outline',
+      //   addon: 'add',
+      // },
+      // 'person-add-5': {
+      //   main: 'accessibility-outline',
+      //   addon: 'add',
+      // },
     });
   }, [setSrc]);
   return (
