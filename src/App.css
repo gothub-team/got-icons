@@ -1,0 +1,82 @@
+/** @format */
+
+html,
+body {
+  height: 100%;
+  width: 100vw;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: center;
+  gap: 16px;
+  background-color: blanchedalmond;
+}
+
+/* Scale canvas with resize attribute to full size */
+canvas[resize] {
+  display: flex;
+  background-color: #ffffff;
+  width: 512px;
+  height: 512px;
+}
+
+.ionicon {
+  height: 12px;
+}
+
+#root {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+#current-icon {
+  height: 512px;
+  width: 512px;
+}
+
+#current-icon svg {
+  overflow: visible;
+}
+
+#icons {
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  overflow-x: scroll;
+}
+
+#icons > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#icons .icon {
+  width: 150px;
+  height: 150px;
+}
+
+#icons .icon svg {
+  overflow: visible;
+  width: 100%;
+  height: 100%;
+}
+
+g.main {
+  stroke-width: 3;
+  stroke: black;
+}
+g.addon {
+  stroke-width: 3;
+  stroke: green;
+}
+
+path.back-circle {
+  stroke: #000;
+  stroke-width: 3;
+  fill: none;
+}

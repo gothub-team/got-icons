@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Load the Paper.js library -->
+    <!-- <script type="text/javascript" src="node_modules/paper/dist/paper-full.js"></script> -->
+    <!-- Load external PaperScript and associate it with myCanvas -->
+    <!-- <script type="text/paperscript" src="./index.js" canvas="myCanvas"> -->
+
+    <style>html,
+        body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            background-color: blanchedalmond;
+        }
+
+        /* Scale canvas with resize attribute to full size */
+        canvas[resize] {
+            background-color: #ffffff;
+            width: 512px;
+            height: 512px;
+        }
+
+        .ionicon {
+            height: 12px;
+        }
+
+        #preview {
+            height: 512px;
+            width: 512px;
+        }
+
+        #preview svg {
+            overflow: visible;
+        }
+
+
+        g.main {
+            stroke-width: 16;
+            stroke: black;
+        }
+        g.addon {
+            stroke-width: 16;
+            stroke: green;
+        }
+
+        path.back-circle {
+            stroke: #000;
+            stroke-width: 12;
+            fill: none;
+        }</style>
+</head>
+
+<body>
+    <!-- <canvas id="myCanvas" resize></canvas>
+    <div id="preview"></div> -->
+    <div id="app"></div>
+    <script src="/src.a2b27638.js"></script>
+</body>
+
+</html>
