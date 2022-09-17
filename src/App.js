@@ -45,18 +45,18 @@ function App() {
         main: 'bicycle-outline',
         addon: 'add',
       },
-      'person-warn': {
-        main: 'accessibility-outline',
-        addon: 'warning',
-      },
-      ab: {
-        main: 'ab',
-        addon: 'warning',
-      },
-      warn: {
-        main: 'warning',
-        addon: 'ab',
-      },
+      // 'person-warn': {
+      //   main: 'accessibility-outline',
+      //   addon: 'warning',
+      // },
+      // ab: {
+      //   main: 'ab',
+      //   addon: 'warning',
+      // },
+      // warn: {
+      //   main: 'warning',
+      //   addon: 'ab',
+      // },
       'person-add': {
         main: 'accessibility-outline',
         addon: 'bicycle-outline',

@@ -114,6 +114,7 @@ function drawGotIcon(iconSrc) {
         addonGroup.strokeWidth = 1;
         addonGroup.strokeScaling = false;
         addonGroup.bringToFront();
+        offsetGroup.bringToFront();
 
         var output = cssClasses(paper.project.exportSVG().outerHTML);
 
@@ -156,14 +157,41 @@ function offsetPaths(paths) {
       //   strokePath.strokeWidth = 1;
       //   return strokePath;
       // });
-      var strokePath = PaperOffset.offsetStroke(path, 20, {
-        cap: 'round',
-        insert: false
+      var thickness = 85;
+      var radius = thickness / 2;
+      var offset;
+      path.curves.forEach(function (curve) {
+        // var tickCount = 4;
+        var tickCount = Math.ceil(curve.length / (thickness / 4));
+        for (i = 0; i <= tickCount; i++) {
+          var time = i / tickCount;
+          var circle = new p.Path.Circle({
+            insert: false,
+            center: new p.CurveLocation(curve, time).point,
+            radius: radius
+          });
+          if (offset) {
+            offset = offset.unite(circle, { insert: false });
+          } else {
+            offset = circle;
+          }
+        }
       });
-      strokePath.fillColor = 'transparent';
-      strokePath.strokeColor = 'blue';
-      strokePath.strokeWidth = 1;
-      return strokePath;
+      offset.fillColor = 'transparent';
+      offset.strokeColor = 'blue';
+      offset.strokeWidth = 1;
+      // offset.selected = true;
+      // offset.smooth({ type: 'continuous', factor: 1 });
+      // offset.simplify(0.1);
+
+      // var strokePath = PaperOffset.offsetStroke(path, 20, {
+      //   cap: 'round',
+      //   insert: false
+      // });
+      // strokePath.fillColor = 'transparent';
+      // strokePath.strokeColor = 'blue';
+      // strokePath.strokeWidth = 1;
+      return offset;
     })
     .flat();
 }
