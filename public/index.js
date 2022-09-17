@@ -3,44 +3,6 @@
 
 var p = paper;
 
-// /* #region  old */
-// var originals = new p.Group({ insert: false }); // Don't insert in DOM.
-// var square = new p.Path.Rectangle({
-//     position: view.center,
-//     size: 500,
-//     parent: originals,
-//     fillColor: 'black'
-// });
-
-// // Make a ring using subtraction of two circles:
-// var inner = new p.Path.Circle({
-//     center: view.center,
-//     radius: 100,
-//     parent: originals,
-//     fillColor: 'black'
-// });
-
-// var outer = new p.Path.Circle({
-//     center: view.center,
-//     radius: 140,
-//     parent: originals,
-//     fillColor: 'black'
-// });
-
-// var ring = outer.subtract(inner);
-
-// var offset = new p.Point(120, 80);
-// ring.position = view.center + offset;
-// /* #endregion */
-
-// var result = square.subtract(ring);
-
-// result.selected = false;
-// result.fillColor = 'black';
-// result.addTo(paper.project);
-
-// result.data = 'test-class';
-
 function asyncSeqForEach(arr, fnForEach) {
   if (arr[0]) {
     return fnForEach(arr[0]).then(function () {
