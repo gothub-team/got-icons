@@ -133,67 +133,43 @@ function offsetGroupPaths(fromGroup, toGroup) {
 }
 
 function offsetPaths(paths) {
-  return paths
-    .map(function (path, i) {
-      var frameRect = path.toShape && path.toShape(false);
-      if (
-        frameRect &&
-        frameRect.type === 'rectangle' &&
-        frameRect.bounds.width === 512 &&
-        frameRect.bounds.height === 512
-      ) {
-        return [frameRect];
-      }
-      // var subPaths = path.children || [path];
-      // return subPaths.map(function (subPath, j) {
-      //   var newP = new p.Path(subPath.pathData);
-      //   console.log(i === 1 && j === 0 ? 'RED' : 'BLUE', subPath.clockwise);
-      //   var strokePath = PaperOffset.offsetStroke(subPath, 20, {
-      //     cap: 'round',
-      //     insert: false
-      //   });
-      //   strokePath.fillColor = 'transparent';
-      //   strokePath.strokeColor = i === 1 && j === 0 ? 'red' : 'blue';
-      //   strokePath.strokeWidth = 1;
-      //   return strokePath;
-      // });
-      var thickness = 85;
-      var radius = thickness / 2;
-      var offset;
-      path.curves.forEach(function (curve) {
-        // var tickCount = 4;
-        var tickCount = Math.ceil(curve.length / (thickness / 4));
-        for (i = 0; i <= tickCount; i++) {
-          var time = i / tickCount;
-          var circle = new p.Path.Circle({
-            insert: false,
-            center: new p.CurveLocation(curve, time).point,
-            radius: radius
-          });
-          if (offset) {
-            offset = offset.unite(circle, { insert: false });
-          } else {
-            offset = circle;
-          }
-        }
-      });
-      offset.fillColor = 'transparent';
-      offset.strokeColor = 'blue';
-      offset.strokeWidth = 1;
-      // offset.selected = true;
-      // offset.smooth({ type: 'continuous', factor: 1 });
-      // offset.simplify(0.1);
+  var frameRect;
+  var offset;
 
-      // var strokePath = PaperOffset.offsetStroke(path, 20, {
-      //   cap: 'round',
-      //   insert: false
-      // });
-      // strokePath.fillColor = 'transparent';
-      // strokePath.strokeColor = 'blue';
-      // strokePath.strokeWidth = 1;
-      return offset;
-    })
-    .flat();
+  paths.forEach(function (path, i) {
+    var _frameRect = path.toShape && path.toShape(false);
+    if (
+      _frameRect &&
+      _frameRect.type === 'rectangle' &&
+      _frameRect.bounds.width === 512 &&
+      _frameRect.bounds.height === 512
+    ) {
+      frameRect = _frameRect;
+      return;
+    }
+    var thickness = 85;
+    var radius = thickness / 2;
+    path.curves.forEach(function (curve) {
+      var tickCount = Math.ceil(curve.length / (thickness / 4));
+      for (i = 0; i <= tickCount; i++) {
+        var time = i / tickCount;
+        var circle = new p.Path.Circle({
+          insert: false,
+          center: new p.CurveLocation(curve, time).point,
+          radius: radius
+        });
+        if (offset) {
+          offset = offset.unite(circle, { insert: false });
+        } else {
+          offset = circle;
+        }
+      }
+    });
+  });
+  offset.fillColor = 'transparent';
+  offset.strokeColor = 'blue';
+  offset.strokeWidth = 1;
+  return [frameRect, offset];
 }
 
 function unnest(item) {
