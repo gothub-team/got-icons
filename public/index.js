@@ -103,7 +103,7 @@ function drawGotIcon(iconSrc) {
       addonGroup.importSVG('ionicons/' + iconSrc.addon + '.svg', function (item) {
         addonGroup.fitBounds(new p.Rectangle([0, 0], [512, 512]));
 
-        offsetGroupPaths(addonGroup, offsetGroup);
+        var offsetPath = offsetGroupPaths(addonGroup, offsetGroup);
         offsetGroup.scaling = 0.4;
         offsetGroup.translate(new p.Point(90, 90));
 
@@ -130,6 +130,7 @@ function offsetGroupPaths(fromGroup, toGroup) {
   var offsetPath = offsetPaths(unnested);
   toGroup.removeChildren();
   toGroup.addChildren(offsetPath);
+  return offsetPath[1];
 }
 
 function offsetPaths(paths) {
@@ -147,7 +148,7 @@ function offsetPaths(paths) {
       frameRect = _frameRect;
       return;
     }
-    var thickness = 85;
+    var thickness = 80;
     var radius = thickness / 2;
     path.curves.forEach(function (curve) {
       var tickCount = Math.ceil(curve.length / (thickness / 4));
