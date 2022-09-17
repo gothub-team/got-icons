@@ -2,10 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
-import { usePaperClipper } from './usePaperClipper';
 
 const useGotIcons = () => {
-  usePaperClipper();
   const updateSrcRef = useRef(() => {});
   const [src, setSrc] = useState({});
   const [svg, setSvg] = useState({});

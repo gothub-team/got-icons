@@ -3,8 +3,6 @@
 
 var p = paper;
 
-var clipperOffset;
-
 // /* #region  old */
 // var originals = new p.Group({ insert: false }); // Don't insert in DOM.
 // var square = new p.Path.Rectangle({
@@ -50,10 +48,6 @@ function asyncSeqForEach(arr, fnForEach) {
     });
   }
 }
-
-window.addEventListener('paperClipperInitialized', function (e) {
-  clipperOffset = e.detail.functions.clipperOffset(e.detail.clipper);
-});
 
 window.addEventListener('gotIconsUpdateSrc', function (e) {
   var src = e.detail.src;
@@ -162,23 +156,14 @@ function offsetPaths(paths) {
       //   strokePath.strokeWidth = 1;
       //   return strokePath;
       // });
-      // var strokePath = PaperOffset.offsetStroke(path, 20, {
-      //   cap: 'round',
-      //   insert: false
-      // });
-      // strokePath.fillColor = 'transparent';
-      // strokePath.strokeColor = 'blue';
-      // strokePath.strokeWidth = 1;
-      // return strokePath;
-      if (typeof clipperOffset === 'function') {
-        var strokePath = clipperOffset(path, 20);
-        strokePath.fillColor = 'transparent';
-        strokePath.strokeColor = 'blue';
-        strokePath.strokeWidth = 1;
-        // return strokePath;
-      } else {
-        return path;
-      }
+      var strokePath = PaperOffset.offsetStroke(path, 20, {
+        cap: 'round',
+        insert: false
+      });
+      strokePath.fillColor = 'transparent';
+      strokePath.strokeColor = 'blue';
+      strokePath.strokeWidth = 1;
+      return strokePath;
     })
     .flat();
 }
