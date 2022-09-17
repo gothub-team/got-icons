@@ -3,6 +3,8 @@
 
 var p = paper;
 
+var clipperOffset;
+
 // /* #region  old */
 // var originals = new p.Group({ insert: false }); // Don't insert in DOM.
 // var square = new p.Path.Rectangle({
@@ -48,6 +50,10 @@ function asyncSeqForEach(arr, fnForEach) {
     });
   }
 }
+
+window.addEventListener('paperClipperInitialized', function (e) {
+  clipperOffset = e.detail.functions.clipperOffset(e.detail.clipper);
+});
 
 window.addEventListener('gotIconsUpdateSrc', function (e) {
   var src = e.detail.src;
@@ -126,36 +132,65 @@ function drawGotIcon(iconSrc) {
 function offsetGroupPaths(fromGroup, toGroup) {
   var unnested = unnest(fromGroup);
   toGroup.addChildren(unnested);
-  var united = offsetPaths(unnested);
+  var offsetPath = offsetPaths(unnested);
   toGroup.removeChildren();
-  toGroup.addChildren(united);
+  toGroup.addChildren(offsetPath);
 }
 
 function offsetPaths(paths) {
-  return paths.map(function (path) {
-    var strokePath = PaperOffset.offsetStroke(path, 20, { cap: 'round' });
-    strokePath.fillColor = 'transparent';
-    strokePath.strokeColor = 'blue';
-    strokePath.strokeWidth = 1;
-    return strokePath;
-  });
+  return paths
+    .map(function (path, i) {
+      var frameRect = path.toShape && path.toShape(false);
+      if (
+        frameRect &&
+        frameRect.type === 'rectangle' &&
+        frameRect.bounds.width === 512 &&
+        frameRect.bounds.height === 512
+      ) {
+        return [frameRect];
+      }
+      // var subPaths = path.children || [path];
+      // return subPaths.map(function (subPath, j) {
+      //   var newP = new p.Path(subPath.pathData);
+      //   console.log(i === 1 && j === 0 ? 'RED' : 'BLUE', subPath.clockwise);
+      //   var strokePath = PaperOffset.offsetStroke(subPath, 20, {
+      //     cap: 'round',
+      //     insert: false
+      //   });
+      //   strokePath.fillColor = 'transparent';
+      //   strokePath.strokeColor = i === 1 && j === 0 ? 'red' : 'blue';
+      //   strokePath.strokeWidth = 1;
+      //   return strokePath;
+      // });
+      // var strokePath = PaperOffset.offsetStroke(path, 20, {
+      //   cap: 'round',
+      //   insert: false
+      // });
+      // strokePath.fillColor = 'transparent';
+      // strokePath.strokeColor = 'blue';
+      // strokePath.strokeWidth = 1;
+      // return strokePath;
+      if (typeof clipperOffset === 'function') {
+        var strokePath = clipperOffset(path, 20);
+        strokePath.fillColor = 'transparent';
+        strokePath.strokeColor = 'blue';
+        strokePath.strokeWidth = 1;
+        // return strokePath;
+      } else {
+        return path;
+      }
+    })
+    .flat();
 }
 
 function unnest(item) {
   var result = [];
-  if (item.type === 'rectangle' && item.bounds.width === 512 && item.bounds.height === 512) {
-    return [];
-  }
   if (item instanceof p.Shape) {
-    // console.log('SHAPE', item);
     result.push(item.toPath(false));
-  } else if (item instanceof p.PathItem || item instanceof p.CompoundPath) {
-    // console.log('PATH', item);
+  } else if (item instanceof p.PathItem) {
     result.push(item.clone({ insert: false }));
   } else if (item.children && item.children.length > 0) {
-    // console.log('CHILDREN', item.children);
     item.children.forEach(function (child) {
-      // console.log('CHILD', child);
       result.push(unnest(child));
     });
   }

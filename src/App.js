@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
+import { usePaperClipper } from './usePaperClipper';
 
 const useGotIcons = () => {
+  usePaperClipper();
   const updateSrcRef = useRef(() => {});
   const [src, setSrc] = useState({});
   const [svg, setSvg] = useState({});
@@ -57,10 +59,10 @@ function App() {
         main: 'warning',
         addon: 'ab',
       },
-      // 'person-add': {
-      //   main: 'accessibility-outline',
-      //   addon: 'add',
-      // },
+      'person-add': {
+        main: 'accessibility-outline',
+        addon: 'bicycle-outline',
+      },
       // 'person-add-1': {
       //   main: 'accessibility-outline',
       //   addon: 'add',
