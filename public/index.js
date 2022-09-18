@@ -67,11 +67,17 @@ function drawGotIcon(iconSrc) {
 
         var offsetPath = offsetGroupPaths(addonGroup, offsetGroup);
         offsetGroup.scaling = 0.4;
-        offsetGroup.translate(new p.Point(90, 90));
+        offsetGroup.translate(new p.Point(100, 90));
+        offsetGroup.removeChildren();
+
+        cutGroup(offsetPath, mainGroup);
+
+        mainGroup.strokeCap = 'round';
+        mainGroup.strokeJoin = 'round';
 
         addonGroup.applyMatrix = true;
         addonGroup.scaling = 0.4;
-        addonGroup.translate(new p.Point(90, 90));
+        addonGroup.translate(new p.Point(100, 90));
         addonGroup.strokeColor = '#0000FF';
         addonGroup.strokeWidth = 1;
         addonGroup.strokeScaling = false;
@@ -84,6 +90,37 @@ function drawGotIcon(iconSrc) {
       });
     });
   });
+}
+
+function cutGroup(fromPath, toGroup) {
+  var unnested = unnest(toGroup);
+  toGroup.removeChildren();
+  var splitted;
+  unnested.forEach(function (part) {
+    if (part.intersects(fromPath)) {
+      splitted = part.divide(fromPath, { trace: false });
+    } else {
+      toGroup.addChild(part);
+    }
+  });
+  toGroup.addChild(splitted);
+  // toGroup.selected = true;
+  splitted.children
+    .filter(function (child) {
+      return child.intersects(fromPath);
+    })
+    .forEach(function (child) {
+      var remove = false;
+      child.curves.forEach(function (curve) {
+        var cl = new p.CurveLocation(curve, 0.5);
+        console.log(fromPath.hasStroke());
+        if (fromPath.hitTest(cl.point)) {
+          remove = true;
+          // child.selected = true;
+        }
+      });
+      remove && child.remove();
+    });
 }
 
 function offsetGroupPaths(fromGroup, toGroup) {
@@ -129,9 +166,9 @@ function offsetPaths(paths) {
       }
     });
   });
-  offset.fillColor = 'transparent';
+  offset.fillColor = '#ff000033';
   offset.strokeColor = 'blue';
-  offset.strokeWidth = 1;
+  offset.strokeWidth = 0;
   return [frameRect, offset];
 }
 
