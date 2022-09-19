@@ -115,10 +115,13 @@ function subtractPaths(path1, path2, trace) {
     var children = path1.removeChildren();
     return new p.CompoundPath({
       children: children
-        .map(function (child) {
+        .map(function (child, i) {
           if (child.intersects(path2)) {
             var sub = child.subtract(path2, { insert: false, trace: trace });
-            // sub.selected = true;
+            sub.children &&
+              sub.children.forEach(function (c, j) {
+                if (touches(c, path2)) c.remove();
+              });
             return sub;
           } else {
             return child;
@@ -127,6 +130,17 @@ function subtractPaths(path1, path2, trace) {
         .flat()
     });
   }
+}
+
+function touches(path1, path2) {
+  var result = false;
+  path1.curves.forEach(function (curve) {
+    var cl = new p.CurveLocation(curve, 0.5);
+    if (path2.hitTest(cl.point)) {
+      result = true;
+    }
+  });
+  return result;
 }
 
 function offsetGroupPaths(fromGroup, toGroup) {
