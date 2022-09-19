@@ -68,7 +68,7 @@ function drawGotIcon(iconSrc) {
         var offsetPath = offsetGroupPaths(addonGroup, offsetGroup);
         offsetGroup.scaling = 0.4;
         offsetGroup.translate(new p.Point(100, 90));
-        offsetGroup.removeChildren();
+        // offsetGroup.removeChildren();
 
         cutGroup(offsetPath, mainGroup);
 
@@ -98,29 +98,35 @@ function cutGroup(fromPath, toGroup) {
   var splitted;
   unnested.forEach(function (part) {
     if (part.intersects(fromPath)) {
-      splitted = part.divide(fromPath, { trace: false });
+      splitted = subtractPaths(part, fromPath, false);
     } else {
       toGroup.addChild(part);
     }
   });
   toGroup.addChild(splitted);
-  // toGroup.selected = true;
-  splitted.children
-    .filter(function (child) {
-      return child.intersects(fromPath);
-    })
-    .forEach(function (child) {
-      var remove = false;
-      child.curves.forEach(function (curve) {
-        var cl = new p.CurveLocation(curve, 0.5);
-        console.log(fromPath.hasStroke());
-        if (fromPath.hitTest(cl.point)) {
-          remove = true;
-          // child.selected = true;
-        }
-      });
-      remove && child.remove();
+  splitted.strokeWidth = 1;
+  splitted.strokeColor = 'black';
+}
+
+function subtractPaths(path1, path2, trace) {
+  if (path1 instanceof p.Path) {
+    return path1.subtract(path2, { insert: false, trace: trace });
+  } else if (path1 instanceof p.CompoundPath) {
+    var children = path1.removeChildren();
+    return new p.CompoundPath({
+      children: children
+        .map(function (child) {
+          if (child.intersects(path2)) {
+            var sub = child.subtract(path2, { insert: false, trace: trace });
+            // sub.selected = true;
+            return sub;
+          } else {
+            return child;
+          }
+        })
+        .flat()
     });
+  }
 }
 
 function offsetGroupPaths(fromGroup, toGroup) {
