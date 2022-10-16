@@ -67,8 +67,8 @@ function drawGotIcon(iconSrc) {
 
         var offsetPath = offsetGroupPaths(addonGroup, offsetGroup);
         offsetGroup.scaling = 0.4;
-        offsetGroup.translate(new p.Point(100, 90));
-        // offsetGroup.removeChildren();
+        offsetGroup.translate(new p.Point(120, 100));
+        offsetGroup.removeChildren();
 
         cutGroup(offsetPath, mainGroup);
 
@@ -77,12 +77,16 @@ function drawGotIcon(iconSrc) {
 
         addonGroup.applyMatrix = true;
         addonGroup.scaling = 0.4;
-        addonGroup.translate(new p.Point(100, 90));
+        addonGroup.translate(new p.Point(120, 100));
         addonGroup.strokeColor = '#0000FF';
         addonGroup.strokeWidth = 1;
         addonGroup.strokeScaling = false;
         addonGroup.bringToFront();
         offsetGroup.bringToFront();
+        // Remove clipping mask rectangle
+        if (addonGroup.children[0] && addonGroup.children[0].children[0])
+          addonGroup.children[0].children[0].remove();
+        console.log(addonGroup);
 
         var output = cssClasses(paper.project.exportSVG().outerHTML);
 
